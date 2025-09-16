@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 
 export type Credentials = {
+  id: string;
   label: string;
   url: string;
   client_id: string;
@@ -37,9 +38,11 @@ export function useCredentials(options?: { autoLoad?: boolean }) {
     );
   }
 
-  const list = ref<Credentials[]>([]);
+  const internalList = ref<Credentials[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+
+  const list = computed(() => internalList.value);
 
   async function loadAll(): Promise<Credentials[]> {
     ensureClient();
@@ -47,7 +50,7 @@ export function useCredentials(options?: { autoLoad?: boolean }) {
     error.value = null;
     try {
       const items = await invoke<Credentials[]>("load_all_credentials");
-      list.value = items;
+      internalList.value = items;
       return items;
     } catch (e) {
       error.value = formatErr(e);

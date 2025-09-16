@@ -1,6 +1,7 @@
 import type { Component } from "vue";
 
 export type Credentials = {
+  id: string;
   label: string;
   url: string;
   clientId: string;

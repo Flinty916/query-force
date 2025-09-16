@@ -31,7 +31,7 @@ watch(list, (newList) => {
     if (!newList) return
     connections.setConnections(
         newList.map((cred: any) => ({
-            id: cred.label,
+            id: cred.id,
             title: cred.label,
             url: '#',
             icon: WifiSync,
@@ -43,22 +43,27 @@ watch(list, (newList) => {
 
 <template>
     <Sidebar>
-        <SidebarHeader class="flex items-center w-full flex-row p-2">
-            <p class="text-xl text-sky-500 font-semibold">QueryForce</p>
-            <AddInstance @new="loadAll" />
+        <SidebarHeader class="flex items-center w-full flex-row p-2 border-b-4 bg-border">
+            <p class="text-xl font-bold">QueryForce</p>
+            <AddInstance @new="loadAll">
+                <PlusCircle class="p-2" :size="36" />
+            </AddInstance>
         </SidebarHeader>
         <SidebarContent>
             <SidebarGroup>
                 <SidebarGroupContent>
                     <SidebarMenu>
-                        <SidebarMenuItem v-for="item in all" :key="item.title">
+                        <SidebarMenuItem v-if="all.length > 0" v-for="item in all" :key="item.title">
                             <SidebarMenuButton asChild>
-                                <div :href="item.url" :class="{ 'text-green-500': item.connected }">
+                                <NuxtLink :to="`/${item.id}`" :class="{ 'text-green-500': item.connected }">
                                     <component :is="(!item.connected) ? item.icon : Wifi" />
                                     <span>{{ item.title }}</span>
-                                </div>
+                                </NuxtLink>
                             </SidebarMenuButton>
                         </SidebarMenuItem as-child>
+                        <SidebarMenuItem v-else class="text-center">
+                            No Available Instances
+                        </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarGroupContent>
             </SidebarGroup>
