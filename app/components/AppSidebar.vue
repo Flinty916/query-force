@@ -14,48 +14,44 @@ import Button from './ui/button/Button.vue';
 import { MoonStar, Sun, Wifi, WifiSync, PlusCircle, PlusIcon } from 'lucide-vue-next';
 import AddInstance from './instances/AddInstance.vue';
 
+import { useConnectionsStore } from '@/stores/connections'
+import { storeToRefs } from 'pinia'
+
 const colourMode = useColorMode()
 
-const items = [
-    {
-        title: "Cathedral (Production)",
-        url: "#",
-        icon: WifiSync,
-        connected: false,
-    },
-    {
-        title: "Cathedral (Sandbox)",
-        url: "#",
-        icon: WifiSync,
-        connected: false,
-    },
-    {
-        title: "Midland (Production)",
-        url: "#",
-        icon: WifiSync,
-        connected: true,
-    },
-    {
-        title: "Midland (Sandbox)",
-        url: "#",
-        icon: WifiSync,
-        connected: false,
-    },
-];
+// credentials composable (talks to Tauri)
+const { list, loading, error, loadAll } = useCredentials({ autoLoad: true })
 
+// pinia store for connections
+const connections = useConnectionsStore()
+const { all } = storeToRefs(connections)
+
+// whenever credentials list changes, sync into connections store
+watch(list, (newList) => {
+    if (!newList) return
+    connections.setConnections(
+        newList.map((cred: any) => ({
+            id: cred.label,
+            title: cred.label,
+            url: '#',
+            icon: WifiSync,
+            connected: false, // default false until user connects
+        }))
+    )
+}, { immediate: true })
 </script>
 
 <template>
     <Sidebar>
         <SidebarHeader class="flex items-center w-full flex-row p-2">
             <p class="text-xl text-sky-500 font-semibold">QueryForce</p>
-            <AddInstance />
+            <AddInstance @new="loadAll" />
         </SidebarHeader>
         <SidebarContent>
             <SidebarGroup>
                 <SidebarGroupContent>
                     <SidebarMenu>
-                        <SidebarMenuItem v-for="item in items" :key="item.title">
+                        <SidebarMenuItem v-for="item in all" :key="item.title">
                             <SidebarMenuButton asChild>
                                 <div :href="item.url" :class="{ 'text-green-500': item.connected }">
                                     <component :is="(!item.connected) ? item.icon : Wifi" />
