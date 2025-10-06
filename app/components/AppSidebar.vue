@@ -43,7 +43,7 @@ watch(list, (newList) => {
 
 <template>
     <Sidebar>
-        <SidebarHeader class="flex items-center w-full flex-row p-2 border-b-4 bg-border">
+        <SidebarHeader class="flex items-center w-full flex-row p-2 border-b-4 bg-border h-14">
             <p class="text-xl font-bold">QueryForce</p>
             <AddInstance @new="loadAll">
                 <PlusCircle class="p-2" :size="36" />
@@ -55,6 +55,7 @@ watch(list, (newList) => {
                     <SidebarMenu>
                         <SidebarMenuItem v-if="all.length > 0" v-for="item in all" :key="item.title">
                             <SidebarMenuButton asChild>
+                                {{ item }}
                                 <NuxtLink :to="`/${item.id}`" :class="{ 'text-green-500': item.connected }">
                                     <component :is="(!item.connected) ? item.icon : Wifi" />
                                     <span>{{ item.title }}</span>

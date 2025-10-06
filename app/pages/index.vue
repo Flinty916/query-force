@@ -3,10 +3,9 @@
     <div>
       <p class="text-xl font-semibold mb-4">Select a Salesforce Instance</p>
       <AddInstance @new="loadAll" class="mt-4">
-        <Button variant="default" class="w-full"
-          >Add a Salesforce Instance</Button
-        >
+        <Button variant="default" class="w-full">Add a Salesforce Instance</Button>
       </AddInstance>
+      {{ list }}
     </div>
   </div>
 </template>

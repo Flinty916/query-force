@@ -215,6 +215,7 @@ fn main() {
             load_credentials,
             load_all_credentials
         ])
+        .plugin(tauri_plugin_http::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

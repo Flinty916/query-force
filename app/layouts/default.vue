@@ -3,10 +3,12 @@
     <AppSidebar />
     <main class="w-full">
       <Toaster />
-      <div class="w-full border-b-2 flex items-center mb-2">
+      <div class="w-full border-b-2 flex items-center mb-2 h-14">
         <SidebarTrigger class="ml-2 mt-2" />
         <NuxtLink class="m-2 ml-auto" to="/">
-          <Button variant="outline"> <Home class="" /> Home </Button>
+          <Button variant="outline">
+            <Home class="" /> Home
+          </Button>
         </NuxtLink>
       </div>
       <slot />

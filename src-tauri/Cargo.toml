@@ -26,3 +26,4 @@ tauri-plugin-log = "2"
 secrecy = "0.10.3"
 keyring = { version = "3", features = ["apple-native", "windows-native"] }
 uuid = { version = "1", features = ["v4", "fast-rng"] }
+tauri-plugin-http = "2.0.0"
